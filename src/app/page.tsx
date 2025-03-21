@@ -1,95 +1,63 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import { VscSend } from "react-icons/vsc";
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <>
+      <main className="flex flex-row min-h-screen">
+        <div className="basis-1/4"></div>
+        <div className="basis-1/2 flex flex-col">
+          <h1 className="text-2xl dark:text-white font-sans text-center mt-4 mb-7 items-center">
+            Chat
+          </h1>
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+          <div className="flex-grow overflow-y-auto p-4 space-y-4">
+            <div className="ml-auto bg-indigo-600 rounded-2xl p-4 max-w-[75%] w-fit">
+              <p className="dark:text-white text-xl antialiased">
+                Hello there! How can I assist you today?
+              </p>
+            </div>
+
+            {/* Long text div */}
+            <div className="flex justify-start mt-10">
+              {/* <p className="dark:text-white text-left text-xl antialiased max-w-prose">
+                "Lorem ipsum quantum flux traverses the nebula horizon, while
+                the kinetic vortex oscillates in ephemeral synergy. Placeholder
+                data generates cascading elements, ensuring equilibrium in
+                dynamic layouts. Anomaly detection in synthetic transactions
+                validates resonance across the user interface. Temporal
+                divergence creates a paradox of seamless navigation, enhancing
+                the trajectory of interactive components. Radiance of luminous
+                typography elevates readability, juxtaposed against dark mode
+                adaptability. Benchmarking performance metrics in an agile
+                environment fosters synthesis of optimal rendering strategies.
+                Vector-based animations maintain fluid transitions, preserving
+                momentum while avoiding entropy-induced lag. This test case
+                ensures robustness against turbulence in varying screen
+                resolutions, embodying a utopian approach to responsive design.
+              </p> */}
+              <div role="status" className="w-full animate-pulse">
+                <div className="h-5 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                <div className="h-5 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                <div className="h-5 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                <div className="h-5 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                <div className="h-5 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[50%]"></div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mb-8 relative">
+            <textarea
+              className="w-full h-34 p-3 border border-stone-700 rounded-3xl dark:bg-stone-800 dark:text-white resize-none focus:outline-none focus:ring-0 focus:border-stone-700 text-xl"
+              placeholder="Ask anything here..."
             />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+            <button className="absolute bottom-4 right-3 bg-indigo-600 text-white p-3 rounded-full hover:bg-indigo-700 transition">
+              <VscSend className="text-2xl" />
+            </button>
+          </div>
         </div>
+
+        <div className="basis-1/4"></div>
       </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_mediu=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+    </>
   );
 }
