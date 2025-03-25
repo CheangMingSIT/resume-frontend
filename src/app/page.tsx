@@ -1,4 +1,5 @@
 "use client";
+import { getChatGbtResponse } from "@/services/chatgbt";
 import { useEffect, useRef, useState } from "react";
 import { VscSend } from "react-icons/vsc";
 
@@ -10,12 +11,7 @@ export default function Home() {
   const [nextId, setNextId] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Function to simulate bot response
-  const getBotReply = (userMessage: string) => {
-    return `You said: "${userMessage}". I am a bot! 🤖`;
-  };
-
-  const handleSendMessage = (e: React.FormEvent) => {
+  const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!textarea.trim()) return;
     setMessages([
@@ -25,15 +21,13 @@ export default function Home() {
     setNextId((prev) => prev + 1);
     setTextArea("");
 
-    setTimeout(() => {
-      const botMessage = {
-        id: nextId + 1,
-        text: getBotReply(textarea),
-        sender: "bot" as const,
-      };
-      setMessages((prev) => [...prev, botMessage]);
-      setNextId((prev) => prev + 1);
-    }, 1000); // Simulated response delay
+    const botMessage = {
+      id: nextId + 1,
+      text: await getChatGbtResponse(textarea),
+      sender: "bot" as const,
+    };
+    setMessages((prev) => [...prev, botMessage]);
+    setNextId((prev) => prev + 1);
   };
 
   useEffect(() => {
