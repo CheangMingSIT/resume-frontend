@@ -1,7 +1,14 @@
 "use client";
-import { getChatGbtResponse } from "@/services/chatgbt";
-import { useEffect, useRef, useState } from "react";
+import { getChatGbtResponse } from "@/services/chatgbt.api";
+import {
+  startTransition,
+  useActionState,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { VscSend } from "react-icons/vsc";
+import { MessageBubble } from "./component/message-bubble";
 
 export default function Home() {
   const [messages, setMessages] = useState<
@@ -11,25 +18,44 @@ export default function Home() {
   const [nextId, setNextId] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const handleSendMessage = async (e: React.FormEvent) => {
+  // Use `useActionState` with the correct function format
+  const [response, formAction, isPending] = useActionState<string, FormData>(
+    getChatGbtResponse,
+    ""
+  );
+
+  useEffect(() => {
+    if (response) {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { id: nextId, text: response, sender: "bot" },
+      ]);
+      setNextId((prev) => prev + 1);
+    }
+  }, [response]);
+
+  const handleSendMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!textarea.trim()) return;
-    setMessages([
-      ...messages,
-      { id: nextId, text: textarea.trim(), sender: "user" as const },
+
+    // Add user message to state
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { id: nextId, text: textarea.trim(), sender: "user" },
     ]);
     setNextId((prev) => prev + 1);
-    setTextArea("");
 
-    const botMessage = {
-      id: nextId + 1,
-      text: await getChatGbtResponse(textarea),
-      sender: "bot" as const,
-    };
-    setMessages((prev) => [...prev, botMessage]);
-    setNextId((prev) => prev + 1);
+    // Create formData
+    const formData = new FormData();
+    formData.append("openaiPrompt", textarea);
+
+    // Ensure formAction is called inside startTransition
+    startTransition(() => {
+      formAction(formData);
+    });
+
+    setTextArea(""); // Clear input
   };
-
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -40,25 +66,15 @@ export default function Home() {
         <h1 className="bg-grey-900 text-white text-center py-4 font-bold text-lg md:text-2xl">
           Chat
         </h1>
+        {/* Display messages */}
         <div className="flex-1 overflow-y-auto p-4 space-y-3">
           {messages.map((msg) => (
-            <div
-              key={msg.id}
-              className={`flex ${
-                msg.sender === "user" ? "justify-end" : "justify-start"
-              }`}
-            >
-              <div
-                className={`rounded-2xl w-fit ${
-                  msg.sender === "user"
-                    ? "p-4 max-w-[75%] bg-indigo-800 text-white"
-                    : "p-4 max-w-[100%] bg-stone-900 text-white"
-                }`}
-              >
-                <p className="text-xl">{msg.text}</p>
-              </div>
-            </div>
+            <MessageBubble key={msg.id} text={msg.text} sender={msg.sender} />
           ))}
+
+          {/* Show "Thinking..." when waiting for a response */}
+          {isPending && <p className="text-gray-500 italic">Thinking...</p>}
+
           <div ref={messagesEndRef} />
         </div>
 
@@ -68,17 +84,19 @@ export default function Home() {
               className="w-full h-30 p-3 border border-stone-700 rounded-3xl dark:bg-stone-900 dark:text-white resize-none focus:outline-none focus:ring-0 text-xl"
               placeholder="Type a message..."
               value={textarea}
+              name="openaiPrompt"
+              onChange={(e) => setTextArea(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
                   e.preventDefault();
-                  handleSendMessage(e);
+                  e.currentTarget.form?.requestSubmit();
                 }
               }}
-              onChange={(e) => setTextArea(e.target.value)}
             />
             <button
               className="absolute bottom-3 right-3 bg-indigo-600 text-white p-3 rounded-full hover:bg-indigo-700 transition"
               type="submit"
+              disabled={isPending} // Disable button while API is processing
             >
               <VscSend className="text-2xl" />
             </button>
