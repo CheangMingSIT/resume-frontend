@@ -1,5 +1,5 @@
+import Head from "next/head";
 import "./global.css";
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -7,7 +7,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-white dark:bg-stone-900">
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </Head>
+      <body className="bg-white dark:bg-stone-900">
         <main>{children}</main>
       </body>
     </html>
