@@ -61,8 +61,8 @@ export default function Home() {
   }, [messages]);
 
   return (
-    <main className="grid grid-cols-8 min-h-screen">
-      <div className="col-span-4 col-start-3 flex flex-col h-screen">
+    <main className="grid md:grid-cols-8 gird-cols-1 min-h-screen">
+      <div className="md:col-span-4 md:col-start-3 flex flex-col h-screen">
         <h1 className="bg-grey-900 text-white text-center py-4 font-bold text-lg md:text-xl">
           Chat
         </h1>
