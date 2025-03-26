@@ -63,7 +63,7 @@ export default function Home() {
   return (
     <main className="grid grid-cols-8 min-h-screen">
       <div className="col-span-4 col-start-3 flex flex-col h-screen">
-        <h1 className="bg-grey-900 text-white text-center py-4 font-bold text-lg md:text-2xl">
+        <h1 className="bg-grey-900 text-white text-center py-4 font-bold text-lg md:text-xl">
           Chat
         </h1>
         {/* Display messages */}
@@ -81,7 +81,7 @@ export default function Home() {
         <div className="p-4 dark:bg-grey-900 shadow-md">
           <form className="relative" onSubmit={handleSendMessage}>
             <textarea
-              className="w-full h-30 p-3 border border-stone-700 rounded-3xl dark:bg-stone-900 dark:text-white resize-none focus:outline-none focus:ring-0 text-xl"
+              className="w-full h-30 p-3 border border-stone-700 rounded-3xl dark:bg-stone-900 dark:text-white resize-none focus:outline-none focus:ring-0 text-md"
               placeholder="Type a message..."
               value={textarea}
               name="openaiPrompt"

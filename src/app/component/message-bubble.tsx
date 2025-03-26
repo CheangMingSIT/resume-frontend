@@ -16,7 +16,7 @@ export function MessageBubble({
             : "p-4 max-w-[100%] bg-stone-900 text-white"
         }`}
       >
-        <p className="text-xl">{text}</p>
+        <p className="text-md">{text}</p>
       </div>
     </div>
   );
